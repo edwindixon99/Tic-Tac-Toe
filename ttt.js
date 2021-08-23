@@ -1,4 +1,8 @@
-GameBoard
+const GameBoard = (() => {
+    let board = [[null, null, null],[null, null, null],[null, null, null]];
+    const addMove = (char)
+    return {board}
+}) ()
 Player
 GameManager
 
