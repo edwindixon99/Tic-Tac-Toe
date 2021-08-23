@@ -12,10 +12,15 @@ const GameManager = (() => {
         let row = GameBoard.board.some( array => array.every( (val, i, arr) => val === arr[0] ) ) 
         let col = function() {
             let first = null;
-            colDone = false;
+            colDone = true;
             for (let i = 0; i < GameBoard.board; i++) {
+                
                 first = GameBoard.board[i][0]
-                for (let j = 0; j < )
+                if (first) {
+                    for (let j = 1; j < GameBoard.board[i]; j++) {
+                        (GameBoard.board[i][j] == first)? colDone = true: colDone=false
+                    }
+                }
             } 
 
 }
