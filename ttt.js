@@ -1,10 +1,15 @@
 const GameBoard = (() => {
     let board = [[null, null, null],[null, null, null],[null, null, null]];
-    const addMove = (char)
-    return {board}
+    const addMove = function(char, row, col) {
+        (!board[row][col]) ? board[row][col] = char : {}
+    }
+    return {board, addMove}
 }) ()
+
 Player
-GameManager
+const GameManager = (() => {
+    const hasWon = GameBoard.board
+}
 
 
 var app = new Vue({
