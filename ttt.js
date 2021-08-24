@@ -7,20 +7,33 @@ const GameBoard = (() => {
 }) ()
 
 const Player = (char) => {
+    let isTurn;
+    // const isTurn = function {
+    // }
+    const setIsTurn = function(bool) {
+        isTurn = bool;
+    }
 
     const makeMove = function(row, col) {
-        if (!GameBoard.board[row][col]) {
+        if (!GameBoard.board[row][col] && isTurn) {
             GameBoard.board[row][col] = char
+            isTurn = !isTurn;
         }
         
+        
     }
-    return {char, makeMove}
+    return {char, isTurn, makeMove, setIsTurn}
 }
 
 
 const GameManager = (() => {
-    const cpu = 
-    let cpuTurn 
+
+    let p1 = Player('X');
+    let p2 = Player('O');
+
+
+    let player1Turn;
+
     const hasWon = function() {
         let row = GameBoard.board.some( array => array.every( (val, i, arr) => val === arr[0] && !(arr[0] == null)) ) 
         let col = function() {
@@ -69,13 +82,27 @@ const GameManager = (() => {
         return (diag || row || col)
     } ();
 
-    return {hasWon};
+    
 
+    const gameStart = function() {
+        p1.setIsTurn(true)
+        p2.setIsTurn(false)
+    }
+
+    const changePlaying = function() {
+        
+    }
+
+    return {p1, p2, gameStart, hasWon};
 }) ()
 
-const player = Player('X');
-const cpu = Player('O');
-player.makeMove(0,0)
+
+
+GameManager.gameStart()
+
+
+GameManager.p1.makeMove(0,0)
+console.log(GameBoard.board)
 console.log(GameManager.hasWon)
 
 // var app = new Vue({
