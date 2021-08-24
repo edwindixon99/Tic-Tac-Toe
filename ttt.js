@@ -7,6 +7,7 @@ const GameBoard = (() => {
 }) ()
 
 const Player = (char) => {
+    let name;
     let isTurn;
     // const isTurn = function {
     // }
@@ -14,15 +15,22 @@ const Player = (char) => {
         isTurn = bool;
     }
 
+    const getIsTurn = function() {
+        return isTurn;
+    }
+
     const makeMove = function(row, col) {
         if (!GameBoard.board[row][col] && isTurn) {
             GameBoard.board[row][col] = char
-            isTurn = !isTurn;
+            GameManager.endturn()
+            
+        } else {
+            console.log("cant do that")
         }
         
         
     }
-    return {char, isTurn, makeMove, setIsTurn}
+    return {char, isTurn, makeMove, setIsTurn, getIsTurn}
 }
 
 
@@ -31,6 +39,7 @@ const GameManager = (() => {
     let p1 = Player('X');
     let p2 = Player('O');
 
+    movesCount = 0;
 
     let player1Turn;
 
@@ -40,12 +49,12 @@ const GameManager = (() => {
             let first;
             let colDone;
             for (let i = 0; i < GameBoard.board.length; i++) {
-                first = GameBoard.board[i][0]
+                first = GameBoard.board[0][i]
                 colDone = first? true: false
                 
                 if (colDone) {
                     for (let j = 1; j < GameBoard.board[i].length; j++) {
-                        (GameBoard.board[i][j] == first)? colDone = true: colDone=false
+                        (GameBoard.board[j][i] == first)? colDone = true: colDone=false
                     }
                 } else {
                     colDone = false;
@@ -67,10 +76,10 @@ const GameManager = (() => {
             
             for (let i = 0; i < GameBoard.board.length; i++) {
                 if (diagDone) {
-                (GameBoard.board[i][j] == first)? diagDone = true: diagDone=false
+                (GameBoard.board[i][i] == first)? diagDone = true: diagDone=false
                 } 
                 if (ediagDone) {
-                    (GameBoard.board[e-i][e-j] == last)? ediagDone = true: ediagDone=false
+                    (GameBoard.board[e-i][e-i] == last)? ediagDone = true: ediagDone=false
                 }
             }
             
@@ -89,11 +98,26 @@ const GameManager = (() => {
         p2.setIsTurn(false)
     }
 
-    const changePlaying = function() {
-        
+    const endturn = function() {
+        p1.setIsTurn(!p1.getIsTurn())
+        p2.setIsTurn(!p2.getIsTurn())
+        checkGameStatus()
+        console.log(GameBoard.board)
+        movesCount += 1;
     }
 
-    return {p1, p2, gameStart, hasWon};
+    const checkGameStatus = function() {
+        if (hasWon) {
+            console.log("someone won")
+        } else if (movesCount == (GameBoard.board.length* GameBoard.board.length)) {
+            console.log("a tie")
+        }
+    }
+    // isGameOver() {
+
+    // }
+
+    return {p1, p2, gameStart, endturn, movesCount, hasWon};
 }) ()
 
 
@@ -104,12 +128,30 @@ GameManager.gameStart()
 GameManager.p1.makeMove(0,0)
 console.log(GameBoard.board)
 console.log(GameManager.hasWon)
+GameManager.p1.makeMove(0,0)
+GameManager.p1.makeMove(0,0)
+GameManager.p2.makeMove(0,0)
+GameManager.p2.makeMove(1,0)
+GameManager.p2.makeMove(1,0)
+GameManager.p2.makeMove(2,0)
+GameManager.p1.makeMove(0,0)
+console.log(GameBoard.board)
 
-// var app = new Vue({
-//     el: '#app',
-//     data: {
-        
+
+var app = new Vue({
+    el: '#app',
+    data: {
+        board:GameBoard.board
       
-//     },
-//     methods: {}
-// })
+    },
+    methods: {
+        divClicked : function(r, c) {
+            GameManager.p1.makeMove(r, c)
+            this.updateBoard()
+
+        },
+        updateBoard : function() {
+            board = GameBoard.board
+        }
+    }
+})

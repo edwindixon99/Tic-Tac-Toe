@@ -10,19 +10,24 @@
     <script src="https://kit.fontawesome.com/f620dfd29b.js" crossorigin="anonymous"></script>
       <title>Tic Tac Toe</title>
       <link rel="icon" href="https://lh3.googleusercontent.com/proxy/udKOdJ9ChWf-uBpX6JyYEu5vwzcZYOq9IJgpLjRrU_w02xLnf6a_MJbn8kCUHyNTukBcRTA2NX8EbgB7tlH3KdOjdHwz1FI8kQvKGLPkpQk-z93UBNmz3AJ9NhDk3cF4RK5K2hnB2TdaL2SIHBQZ6M5hbyTFamU5FkzmKw">
-
+      <style>
+        .col {
+          text-align: center;
+        }
+      </style>
   </head>
   <div ></div>
   <body class="bg-image" style="
   background-image: url('https://cdn.wallpapersafari.com/43/61/QJpslt.png');
   height: 100vh;
   ">
-  <div class="container" style="color: rgb(251, 255, 44); background-color: darkblue;">
-      <div class="row">
-          <div class="col">
-              X
+  <div id="app" class="container" style="color: rgb(251, 255, 44); background-color: darkblue;">
+      <div v-for="(row, rindex) in board" class="row">
+          <div v-for="(col, cindex) in row"  v-on:click="divClicked(rindex, cindex)" :id="rindex+'_'+cindex"  class="col">
+              {{ col }}
           </div>
       </div>
+      
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
