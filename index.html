@@ -14,6 +14,16 @@
         .col {
           text-align: center;
         }
+
+        div[class="row"] {
+          outline: 1px dotted rgba(0, 0, 0, 0.25);
+        }
+
+        div[class^="col-"] {
+          background-color: rgba(255, 0, 0, 0.2);
+          outline: 1px dotted rgba(0, 0, 0, 0.5);
+        }
+
       </style>
   </head>
   <div ></div>
@@ -21,11 +31,8 @@
   background-image: url('https://cdn.wallpapersafari.com/43/61/QJpslt.png');
   height: 100vh;
   ">
-  <div id="app" class="container" style="color: rgb(251, 255, 44); background-color: darkblue;">
-      <div v-for="(row, rindex) in board" class="row">
-          <div v-for="(col, cindex) in row"  v-on:click="divClicked(rindex, cindex)" :id="rindex+'_'+cindex"  class="col">
-              {{ col }}
-          </div>
+  <div id="board" class="container" style="min-height:50px; color: rgb(251, 255, 44); background-color: darkblue;">
+      
       </div>
       
   </div>

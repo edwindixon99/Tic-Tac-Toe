@@ -23,7 +23,8 @@ const Player = (char) => {
         if (!GameBoard.board[row][col] && isTurn) {
             GameBoard.board[row][col] = char
             GameManager.endturn()
-            
+            const square = document.getElementById(`${row}${col}`);
+            square.textContent = char;
         } else {
             console.log("cant do that")
         }
@@ -120,9 +121,29 @@ const GameManager = (() => {
     return {p1, p2, gameStart, endturn, movesCount, hasWon};
 }) ()
 
-
-
 GameManager.gameStart()
+
+
+
+const sect = document.getElementById('board');
+for (let i=0; i<3; i++) {
+    let row = document.createElement('div');
+    row.setAttribute('class', 'row');
+
+    for (j=0; j<3; j++) {
+        let entry = document.createElement('div'); 
+        entry.setAttribute('class', 'col');
+        entry.setAttribute('id', `${i}${j}`)
+        entry.setAttribute.onclick = function() { GameManager.p1.makeMove(i, j) }
+        entry.textContent = "     ";
+        row.appendChild(entry);
+    }
+    sect.appendChild(row)
+}
+
+
+
+
 
 
 GameManager.p1.makeMove(0,0)
@@ -138,20 +159,8 @@ GameManager.p1.makeMove(0,0)
 console.log(GameBoard.board)
 
 
-var app = new Vue({
-    el: '#app',
-    data: {
-        board:GameBoard.board
-      
-    },
-    methods: {
-        divClicked : function(r, c) {
-            GameManager.p1.makeMove(r, c)
-            this.updateBoard()
 
-        },
-        updateBoard : function() {
-            board = GameBoard.board
-        }
-    }
-})
+
+
+
+
