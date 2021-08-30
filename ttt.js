@@ -22,10 +22,11 @@ const Player = (char) => {
     const makeMove = function(row, col) {
         if (!GameBoard.board[row][col] && isTurn) {
             GameBoard.board[row][col] = char
-            GameManager.endturn()
-            console.log(`${row}${col}`);
+            
+            console.log(col);
             const square = document.getElementById(`${row}${col}`);
             square.textContent = char;
+            // GameManager.endturn()
         } else {
             console.log("cant do that")
         }
@@ -133,6 +134,7 @@ for (let i=0; i<3; i++) {
     for (j=0; j<3; j++) {
         let entry = document.createElement('td'); 
         entry.setAttribute('id', `${i}${j}`)
+        console.log(i,j)
         entry.addEventListener("click", function() {GameManager.p1.makeMove(i, j) })
         row.appendChild(entry);
     }
