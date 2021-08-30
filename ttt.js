@@ -23,6 +23,7 @@ const Player = (char) => {
         if (!GameBoard.board[row][col] && isTurn) {
             GameBoard.board[row][col] = char
             GameManager.endturn()
+            console.log(`${row}${col}`);
             const square = document.getElementById(`${row}${col}`);
             square.textContent = char;
         } else {
@@ -127,15 +128,12 @@ GameManager.gameStart()
 
 const sect = document.getElementById('board');
 for (let i=0; i<3; i++) {
-    let row = document.createElement('div');
-    row.setAttribute('class', 'row');
+    let row = document.createElement('tr');
 
     for (j=0; j<3; j++) {
-        let entry = document.createElement('div'); 
-        entry.setAttribute('class', 'col');
+        let entry = document.createElement('td'); 
         entry.setAttribute('id', `${i}${j}`)
-        entry.setAttribute.onclick = function() { GameManager.p1.makeMove(i, j) }
-        entry.textContent = "     ";
+        entry.addEventListener("click", function() {GameManager.p1.makeMove(i, j) })
         row.appendChild(entry);
     }
     sect.appendChild(row)
@@ -155,7 +153,7 @@ GameManager.p2.makeMove(0,0)
 GameManager.p2.makeMove(1,0)
 GameManager.p2.makeMove(1,0)
 GameManager.p2.makeMove(2,0)
-GameManager.p1.makeMove(0,0)
+// GameManager.p1.makeMove(0,0)
 console.log(GameBoard.board)
 
 
