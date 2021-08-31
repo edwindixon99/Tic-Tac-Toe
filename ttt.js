@@ -8,7 +8,7 @@ const GameBoard = (() => {
 
 const Player = (char) => {
     let name;
-    let isTurn;
+    let isTurn= false;
     // const isTurn = function {
     // }
     const setIsTurn = function(bool) {
@@ -20,18 +20,24 @@ const Player = (char) => {
     }
 
     const makeMove = function(row, col) {
-        if (!GameBoard.board[row][col] && isTurn) {
+        if (!GameBoard.board[row][col] && getIsTurn()) {
             GameBoard.board[row][col] = char
+            console.log(GameBoard.board)
             GameManager.endturn()
             console.log(`${row}${col}`);
             const square = document.getElementById(`${row}${col}`);
             square.textContent = char;
+            return true;
         } else {
             console.log("cant do that")
+            return false;
         }
-        
-        
     }
+    
+
+        
+        
+
     return {char, isTurn, makeMove, setIsTurn, getIsTurn}
 }
 
@@ -106,6 +112,11 @@ const GameManager = (() => {
         checkGameStatus()
         console.log(GameBoard.board)
         movesCount += 1;
+        if (p2.getIsTurn()) {
+            console.log("hi")
+            cpumm()
+        }
+        
     }
 
     const checkGameStatus = function() {
@@ -115,11 +126,27 @@ const GameManager = (() => {
             console.log("a tie")
         }
     }
+
+    const cpumm = function() {
+        found = false;
+        while (!found) {
+            console.log(GameBoard.board.length)
+            console.log( Math.floor((Math.random() * GameBoard.board.length)));
+            xdex = Math.floor(Math.random() * GameBoard.board.length); 
+            ydex = Math.floor(Math.random() * GameBoard.board.length); 
+            console.log(xdex, ydex)
+            if (p2.makeMove(ydex, xdex)) {
+                found = true;
+            }
+        }
+        
+
+    }
     // isGameOver() {
 
     // }
 
-    return {p1, p2, gameStart, endturn, movesCount, hasWon};
+    return {p1, p2, gameStart, endturn, movesCount, hasWon, cpumm};
 }) ()
 
 GameManager.gameStart()
@@ -144,7 +171,7 @@ for (let i=0; i<3; i++) {
 
 
 
-GameManager.p1.makeMove(0,0)
+// GameManager.p1.makeMove(0,0)
 console.log(GameBoard.board)
 console.log(GameManager.hasWon)
 GameManager.p1.makeMove(0,0)
