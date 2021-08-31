@@ -160,6 +160,7 @@ for (let i=0; i<3; i++) {
     for (j=0; j<3; j++) {
         let entry = document.createElement('td'); 
         entry.setAttribute('id', `${i}${j}`)
+        console.log(i,j)
         entry.addEventListener("click", function() {GameManager.p1.makeMove(i, j) })
         row.appendChild(entry);
     }
