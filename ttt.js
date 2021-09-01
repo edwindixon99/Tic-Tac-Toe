@@ -3,12 +3,16 @@ const GameBoard = (() => {
     // const makeMove = function(char, row, col) {
     //     (!board[row][col]) ? board[row][col] = char : {}
     // }
+    const getBoard = function() {
+        return board;
+    }
 
-    avaliableIndices = function() {
+    const avaliableIndices = (boarde) => {
+        console.log(boarde)
         let indices = []
-        for (let i = 0; i<board.length; i++) {
-            for (let j = 0; j<board.length; j++) {
-                if (!board[i][j]) {
+        for (let i = 0; i<boarde.length; i++) {
+            for (let j = 0; j<boarde.length; j++) {
+                if (boarde[i][j] == null) {
                     indices.push([i,j]);
                 }
             }
@@ -147,7 +151,7 @@ const GameManager = (() => {
     }
 
     const cpumm = function() {
-        let avaliableIndices = GameBoard.avaliableIndices()
+        let avaliableIndices = GameBoard.avaliableIndices(GameBoard.board)
         let choice = Math.floor(Math.random() * avaliableIndices.length); 
         let ydex, xdex;
 
