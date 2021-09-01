@@ -170,16 +170,18 @@ const GameManager = (() => {
         p1.setIsTurn = false;
         p2.setIsTurn = false;
         if (status) {
-            setTimeout( () => alert(`Game Over!!!\n${char} won the game.`) , 1000); 
+            setTimeout( () => alert(`Game Over!!!\n${char} won the game.`) , 0); 
             
         } else {
-            setTimeout( () => alert(`Game Over!!!\nIt was a tie game.`) , 1000);
+            setTimeout( () => alert(`Game Over!!!\nIt was a tie game.`) , 0);
             
         }
         const sect = document.getElementById('restart');
         let rsButton = document.createElement('button'); 
         rsButton.classList.add('btn', 'btn-primary')
         rsButton.addEventListener("click", function() {GameManager.gameStart() })
+        rsButton.textContent = "Replay";
+        // rsButton.style.width = "90px";
         sect.appendChild(rsButton);   
     }
 
