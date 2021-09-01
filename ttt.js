@@ -3,7 +3,19 @@ const GameBoard = (() => {
     // const makeMove = function(char, row, col) {
     //     (!board[row][col]) ? board[row][col] = char : {}
     // }
-    return {board}
+
+    avaliableIndices = function() {
+        let indices = []
+        for (let i = 0; i<board.length; i++) {
+            for (let j = 0; j<board.length; j++) {
+                if (!board[i][j]) {
+                    indices.push([i,j]);
+                }
+            }
+        }
+        return indices
+    }
+    return {board, avaliableIndices}
 }) ()
 
 const Player = (char) => {
@@ -22,11 +34,10 @@ const Player = (char) => {
     const makeMove = function(row, col) {
         if (!GameBoard.board[row][col] && getIsTurn()) {
             GameBoard.board[row][col] = char
-            console.log(GameBoard.board)
-            GameManager.endturn()
-            console.log(`${row}${col}`);
+            
             const square = document.getElementById(`${row}${col}`);
             square.textContent = char;
+            GameManager.endturn()
             return true;
         } else {
             console.log("cant do that")
@@ -51,21 +62,22 @@ const GameManager = (() => {
 
     let player1Turn;
 
-    const hasWon = function() {
-        let row = GameBoard.board.some( array => array.every( (val, i, arr) => val === arr[0] && !(arr[0] == null)) ) 
+    let hasWon = function(char) {
+        console.log("jkglsdhgkhgkhjkghjkhfjklshfkhkfhaskdfhdskh")
+        let row = GameBoard.board.some( array => array.every( (char, i, arr) => char === arr[0] && !(arr[0] == null)) ) 
         let col = function() {
-            let first;
             let colDone;
             for (let i = 0; i < GameBoard.board.length; i++) {
-                first = GameBoard.board[0][i]
-                colDone = first? true: false
+        
+                colDone = char? true: false
                 
-                if (colDone) {
-                    for (let j = 1; j < GameBoard.board[i].length; j++) {
-                        (GameBoard.board[j][i] == first)? colDone = true: colDone=false
+                
+                for (let j = 1; j < GameBoard.board[i].length; j++) {
+                    if (colDone) {
+                        (GameBoard.board[j][i] == char)? colDone = true: colDone = false;
+                    } else {
+                        break;
                     }
-                } else {
-                    colDone = false;
                 }
 
             if (colDone) {
@@ -78,13 +90,13 @@ const GameManager = (() => {
             e = GameBoard.board.length - 1
             first = GameBoard.board[0][0]
             last = GameBoard.board[0][e]
-            diagDone = first? true: false
-            ediagDone = last? true: false
+            diagDone = (first == char)? true: false
+            ediagDone = (last == char)? true: false
             
             
             for (let i = 0; i < GameBoard.board.length; i++) {
                 if (diagDone) {
-                (GameBoard.board[i][i] == first)? diagDone = true: diagDone=false
+                    (GameBoard.board[i][i] == first)? diagDone = true: diagDone=false
                 } 
                 if (ediagDone) {
                     (GameBoard.board[e-i][e-i] == last)? ediagDone = true: ediagDone=false
@@ -97,56 +109,71 @@ const GameManager = (() => {
             return false 
         } ();
         return (diag || row || col)
-    } ();
+    };
 
     
 
     const gameStart = function() {
         p1.setIsTurn(true)
         p2.setIsTurn(false)
+        GameBoard.board = [[null, null, null],[null, null, null],[null, null, null]];
     }
 
     const endturn = function() {
+        if (p1.getIsTurn()) {
+            checkGameStatus(p1.char)
+        } else {
+            checkGameStatus(p2.char)
+        }
+        
         p1.setIsTurn(!p1.getIsTurn())
         p2.setIsTurn(!p2.getIsTurn())
-        checkGameStatus()
-        console.log(GameBoard.board)
+        
+
         movesCount += 1;
         if (p2.getIsTurn()) {
-            console.log("hi")
+
             cpumm()
         }
         
     }
 
-    const checkGameStatus = function() {
-        if (hasWon) {
-            console.log("someone won")
+    const checkGameStatus = function(char) {
+        if (hasWon(char)) {
+            gameOver(true, char);
         } else if (movesCount == (GameBoard.board.length* GameBoard.board.length)) {
-            console.log("a tie")
+            gameOver(false, char);
         }
     }
 
     const cpumm = function() {
-        found = false;
-        while (!found) {
-            console.log(GameBoard.board.length)
-            console.log( Math.floor((Math.random() * GameBoard.board.length)));
-            xdex = Math.floor(Math.random() * GameBoard.board.length); 
-            ydex = Math.floor(Math.random() * GameBoard.board.length); 
-            console.log(xdex, ydex)
-            if (p2.makeMove(ydex, xdex)) {
-                found = true;
-            }
-        }
-        
+        let avaliableIndices = GameBoard.avaliableIndices()
+        let choice = Math.floor(Math.random() * avaliableIndices.length); 
+        let ydex, xdex;
 
+        ydex = avaliableIndices[choice][0]
+        xdex = avaliableIndices[choice][1];
+
+        p2.makeMove(ydex, xdex)
+    
     }
-    // isGameOver() {
 
-    // }
+    const gameOver = function(status, char) {
+        p1.setIsTurn = false;
+        p2.setIsTurn = false;
+        if (status) {
+            alert(`Game Over!!!\n${char} won the game.`)
+        } else {
+            alert(`Game Over!!!\nIt was a tie game.`)
+        }
+        const sect = document.getElementById('restart');
+        let rsButton = document.createElement('button'); 
+        rsButton.classList.add('btn', 'btn-primary')
+        rsButton.addEventListener("click", function() {GameManager.gameStart() })
+        sect.appendChild(rsButton);   
+    }
 
-    return {p1, p2, gameStart, endturn, movesCount, hasWon, cpumm};
+    return {p1, p2, gameStart, endturn, movesCount, hasWon, cpumm, gameOver};
 }) ()
 
 GameManager.gameStart()
@@ -157,10 +184,10 @@ const sect = document.getElementById('board');
 for (let i=0; i<3; i++) {
     let row = document.createElement('tr');
 
-    for (j=0; j<3; j++) {
+    for (let j=0; j<3; j++) {
         let entry = document.createElement('td'); 
         entry.setAttribute('id', `${i}${j}`)
-        console.log(i,j)
+
         entry.addEventListener("click", function() {GameManager.p1.makeMove(i, j) })
         row.appendChild(entry);
     }
@@ -175,12 +202,12 @@ for (let i=0; i<3; i++) {
 // GameManager.p1.makeMove(0,0)
 console.log(GameBoard.board)
 console.log(GameManager.hasWon)
-GameManager.p1.makeMove(0,0)
-GameManager.p1.makeMove(0,0)
-GameManager.p2.makeMove(0,0)
-GameManager.p2.makeMove(1,0)
-GameManager.p2.makeMove(1,0)
-GameManager.p2.makeMove(2,0)
+// GameManager.p1.makeMove(0,0)
+// GameManager.p1.makeMove(0,0)
+// GameManager.p2.makeMove(0,0)
+// GameManager.p2.makeMove(1,0)
+// GameManager.p2.makeMove(1o,0)
+// GameManager.p2.makeMove(2,0)
 // GameManager.p1.makeMove(0,0)
 console.log(GameBoard.board)
 
