@@ -4,19 +4,19 @@ const GameBoard = (() => {
     //     (!board[row][col]) ? board[row][col] = char : {}
     // }
 
-    avaliableIndices = function() {
+    const avaliableIndices = function() {
         let indices = []
         for (let i = 0; i<board.length; i++) {
             for (let j = 0; j<board.length; j++) {
-                if (!board[i][j]) {
+                if (board[i][j] == null) {
                     indices.push([i,j]);
                 }
             }
         }
         return indices
-    }
+    };
     return {board, avaliableIndices}
-}) ()
+})
 
 const Player = (char) => {
     let name;
@@ -114,6 +114,8 @@ const GameManager = (() => {
     
 
     const gameStart = function() {
+        console.log(p1)
+        console.log(p2)
         p1.setIsTurn(true)
         p2.setIsTurn(false)
         GameBoard.board = [[null, null, null],[null, null, null],[null, null, null]];
@@ -147,7 +149,7 @@ const GameManager = (() => {
     }
 
     const cpumm = function() {
-        let avaliableIndices = GameBoard.avaliableIndices()
+        let avaliableIndices = GameBoard.avaliableIndices();
         let choice = Math.floor(Math.random() * avaliableIndices.length); 
         let ydex, xdex;
 
