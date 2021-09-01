@@ -170,9 +170,11 @@ const GameManager = (() => {
         p1.setIsTurn = false;
         p2.setIsTurn = false;
         if (status) {
-            alert(`Game Over!!!\n${char} won the game.`)
+            setTimeout( () => alert(`Game Over!!!\n${char} won the game.`) , 1000); 
+            
         } else {
-            alert(`Game Over!!!\nIt was a tie game.`)
+            setTimeout( () => alert(`Game Over!!!\nIt was a tie game.`) , 1000);
+            
         }
         const sect = document.getElementById('restart');
         let rsButton = document.createElement('button'); 
