@@ -20,7 +20,7 @@ const GameBoard = (() => {
         return indices
     };
     return {board, avaliableIndices}
-})
+}) ()
 
 const Player = (char) => {
     let name;
