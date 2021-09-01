@@ -54,7 +54,7 @@ const Player = (char) => {
         
 
     return {char, isTurn, makeMove, setIsTurn, getIsTurn}
-}
+} 
 
 
 const GameManager = (() => {
@@ -73,7 +73,7 @@ const GameManager = (() => {
             let colDone;
             for (let i = 0; i < GameBoard.board.length; i++) {
         
-                colDone = char? true: false
+                colDone = (GameBoard.board[0][i] == char)? true: false
                 
                 
                 for (let j = 1; j < GameBoard.board[i].length; j++) {
