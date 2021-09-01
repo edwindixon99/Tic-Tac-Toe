@@ -18,9 +18,9 @@ const GameBoard = (() => {
             }
         }
         return indices
-    }
+    };
     return {board, avaliableIndices}
-}) ()
+})
 
 const Player = (char) => {
     let name;
@@ -118,6 +118,8 @@ const GameManager = (() => {
     
 
     const gameStart = function() {
+        console.log(p1)
+        console.log(p2)
         p1.setIsTurn(true)
         p2.setIsTurn(false)
         GameBoard.board = [[null, null, null],[null, null, null],[null, null, null]];
