@@ -85,6 +85,7 @@ const GameManager = (() => {
                 }
 
             if (colDone) {
+                console.log("col")
                 return true;
             }
             }
@@ -103,11 +104,12 @@ const GameManager = (() => {
                     (GameBoard.board[i][i] == first)? diagDone = true: diagDone=false
                 } 
                 if (ediagDone) {
-                    (GameBoard.board[e-i][e-i] == last)? ediagDone = true: ediagDone=false
+                    (GameBoard.board[i][e-i] == last)? ediagDone = true: ediagDone=false
                 }
             }
             
             if (diagDone || ediagDone) {
+                console.log("diag")
                 return true;
             }
             return false 
