@@ -125,32 +125,62 @@ const GameManager = (() => {
         p1.setIsTurn(true)
         p2.setIsTurn(false)
         GameBoard.board = [[null, null, null],[null, null, null],[null, null, null]];
+
+
+
+        const sect = document.getElementById('board');
+        const sectrs = document.getElementById('restart');
+        removeAllChildNodes(sect);
+        removeAllChildNodes(sectrs);
+        for (let i=0; i<3; i++) {
+            let row = document.createElement('tr');
+
+            for (let j=0; j<3; j++) {
+                let entry = document.createElement('td'); 
+                entry.setAttribute('id', `${i}${j}`)
+
+                entry.addEventListener("click", function() {GameManager.p1.makeMove(i, j) })
+                row.appendChild(entry);
+            }
+            sect.appendChild(row)
+        }
+
+
+
+        // for (let i=0; i<3; i++) {
+
+        //     for (let j=0; j<3; j++) {
+        //         let entry = document.getElementById(`${i}${j}`) 
+        //         entry.textContent = "";
     }
 
     const endturn = function() {
+        console.log(p1)
         if (p1.getIsTurn()) {
-            checkGameStatus(p1.char)
+            gO = checkGameStatus(p1.char)
         } else {
-            checkGameStatus(p2.char)
+            gO = checkGameStatus(p2.char)
         }
-        
-        p1.setIsTurn(!p1.getIsTurn())
-        p2.setIsTurn(!p2.getIsTurn())
-        
+        if (!gO) {
+            p1.setIsTurn(!p1.getIsTurn())
+            p2.setIsTurn(!p2.getIsTurn())
+            
 
-        movesCount += 1;
-        if (p2.getIsTurn()) {
+            movesCount += 1;
+            if (p2.getIsTurn()) {
 
-            cpumm()
+                cpumm()
+            }
+        
         }
         
     }
 
     const checkGameStatus = function(char) {
         if (hasWon(char)) {
-            gameOver(true, char);
-        } else if (movesCount == (GameBoard.board.length* GameBoard.board.length)) {
-            gameOver(false, char);
+            return gameOver(true, char);
+        } else if (GameBoard.avaliableIndices(GameBoard.board) == 0) {
+            return gameOver(false, char);
         }
     }
 
@@ -167,8 +197,8 @@ const GameManager = (() => {
     }
 
     const gameOver = function(status, char) {
-        p1.setIsTurn = false;
-        p2.setIsTurn = false;
+        p1.setIsTurn(false);
+        p2.setIsTurn(false);
         if (status) {
             setTimeout( () => alert(`Game Over!!!\n${char} won the game.`) , 0); 
             
@@ -183,28 +213,26 @@ const GameManager = (() => {
         rsButton.textContent = "Replay";
         // rsButton.style.width = "90px";
         sect.appendChild(rsButton);   
+        return true;
     }
 
     return {p1, p2, gameStart, endturn, movesCount, hasWon, cpumm, gameOver};
 }) ()
 
+
+
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
+
+
 GameManager.gameStart()
 
 
 
-const sect = document.getElementById('board');
-for (let i=0; i<3; i++) {
-    let row = document.createElement('tr');
-
-    for (let j=0; j<3; j++) {
-        let entry = document.createElement('td'); 
-        entry.setAttribute('id', `${i}${j}`)
-
-        entry.addEventListener("click", function() {GameManager.p1.makeMove(i, j) })
-        row.appendChild(entry);
-    }
-    sect.appendChild(row)
-}
 
 
 
